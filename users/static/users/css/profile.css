@@ -1,0 +1,226 @@
+/* general */
+body {
+  background-color: #2D4073;
+}
+
+/* navbar */
+nav {
+  background-color: #F5E29F;
+  height: 70px;
+  margin-left: -15px;
+  padding-right: 15px;
+}
+
+img.profile-icon, img.settings-icon, img.logout-icon {
+  margin-top: 13px;
+  float: right;
+  width: 45px;
+  margin-right: 15px;
+}
+
+img.logout-icon {
+  margin-right: 0;
+  margin-left: 15px;
+}
+
+i.addrecipe-icon {
+  color: #E5E5E5;
+  margin: 9px 0px 0px 10px;
+}
+
+div.addrecipe-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50px;
+  float: right;
+  background-color: #2D4073;
+  margin: 13px 0 0 0;
+  font-size: 30px;
+}
+
+/* profile section */
+div.profile-container {
+  margin-left: 55px;
+  width: 550px;
+  display: inline-block;
+  position: relative;
+}
+
+p.profile-title {
+  color: #FADF80;
+  font-size: 65px;
+  margin-top: 35px;
+  font-family: "Abril Fatface";
+}
+
+form label, figcaption {
+  font-family: "Roboto Slab";
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+figcaption {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 15px;
+}
+
+span.helptext {
+  display: none;
+}
+
+input#id_username {
+  border: none;
+  outline: none;
+  background-color: inherit;
+  font-family: "Roboto Slab";
+  color: #F5F2D8;
+  font-size: 22px;
+  border-bottom: 1px solid #F5F2D8;
+  width: 250px;
+  margin-left: 20px;
+  display: inline-block;
+  vertical-align: 8px;
+}
+
+div.image-section {
+  width: 275px;
+  margin-left: 77px;
+  position: relative;
+}
+
+i.fa-pencil-alt {
+  color: white;
+  font-size: 24px;
+  position: absolute;
+  top: 40px;
+  right: 10px;
+}
+
+i.fa-pencil-alt:hover {
+  cursor: pointer;
+}
+
+img.profile-image {
+  width: 275px;
+  height: 275px;
+  border-radius: 300px;
+  margin-top: 35px;
+}
+
+form button {
+  font-size: 22px;
+  padding: 8px 30px;
+  line-height: 30px;
+  border: 0;
+  color: #000000;
+  background-color: #C4C4C4;
+  font-family: "Roboto Slab";
+  font-weight: 600;
+  position: absolute;
+  bottom: -70px;
+  margin-left: 112px;
+}
+
+form button:hover {
+  cursor: pointer;
+}
+
+/* previous posts */
+div.previous-posts {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 8%;
+}
+
+div.all-recipes {
+  background-color: #C4C4C4;
+  padding: 15px;
+  padding-right: 30px;
+  max-height: 65vh;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+div.all-recipes::-webkit-scrollbar {
+	width: 10px;
+  padding-left: 10px;
+}
+
+div.all-recipes::-webkit-scrollbar-thumb {
+	border-radius: 20px; 
+}
+
+div.all-recipes:hover::-webkit-scrollbar-thumb {
+	background-color: #fffddb; 
+	border-radius: 20px; 
+}
+
+div.recipe {
+  padding: 0px 10px 35px 10px;
+  border-left: 1px solid rgb(53, 53, 53);
+}
+
+p.recipe-date {
+  font-family: "Abril Fatface";
+  font-size: 26px;
+  margin: 0;
+} 
+
+.recipe-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 150px;
+  margin-left: 5px;
+  margin-top: 5px;
+  display: inline-block;
+}
+
+div.recipe-description {
+  vertical-align: top;
+  display: inline-block;
+  margin-left: 30px;
+}
+
+p.recipe-name {
+  background-color: #FADF80;
+  padding: 0 10px;
+  font-size: 30px;
+  font-family: "Abril Fatface";
+  display: inline-block;
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+
+p.recipe-info {
+  font-family: "Roboto Slab";
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 0;
+  margin-left: 10px;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+}
+
+p.no-recipes {
+  margin: 0;
+  font-family: "Roboto Slab";
+  font-weight: 600;
+  font-size: 20px;
+}
+
+/* general */
+.hide {
+  display: none;
+}
+
+i.selected {
+  color: #FADF80;
+}

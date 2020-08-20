@@ -1,0 +1,130 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+{% block style %}
+  <link rel="stylesheet" type="text/css" href="{% static 'food/css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+  <body>
+
+    <nav>
+      <a href="{% url 'logout' %}"><img src="{% static 'food/images/logout.png' %}" class="logout-icon"/></a>
+      <div class="addrecipe-icon">
+        <a href="{% url 'addrecipe' %}"><i class="fas fa-plus addrecipe-icon"></i></a>
+      </div>
+      <a href="{% url 'profile' %}"><img src="{% static 'food/images/user.png' %}" class="profile-icon"/></a>
+      <a href="{% url 'home' %}"><img src="{% static 'food/images/home.png' %}" class="profile-icon"/></a>
+    </nav>
+
+    <p class="home-title">That tastes LEGEN-DAIRY</p>
+    <img src="{% static 'food/images/milk.png' %}" class="home-icon"/> <br/>
+
+    <p class="filter-recipes">Filter By</p>
+
+    <div class="dropdown-filter" onclick="displayFilters();">
+      <p id="selected-filter" class="selected-filter"> {{ filter_by }} </p>
+
+      <div id="filters" class="other-filters hidden">
+        <ul>
+          <li onclick="setFilter(this);">Highest Rated</li>
+          <li onclick="setFilter(this);">Shortest Cook Time</li>
+          <li onclick="setFilter(this);">Alphabetical Order</li>
+          <li onclick="setFilter(this);">Least Difficult</li>
+          <li onclick="setFilter(this);">Date Created</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- hidden input -->
+    <form method="GET" action="/home/">
+      {% csrf_token %}
+      <input id="filter-by-type" type="hidden" class="hidden" type="text" name="filter_raw" value="{{ filter_by }}"/>
+      <input id="filter-by-type-clean" type="hidden" class="hidden" type="text" name="filter_clean" value="{{ filter_by_clean }}" required/>
+      <button type="submit" class="filter-button">
+        <i class="fas fa-arrow-alt-circle-right" onclick="filter(this);" role="button"></i>
+      </button>
+    </form>
+
+    <div class="all-recipes">
+      {% for recipe, image in image_recipes %}
+        <div class="recipe">
+          <p class="recipe-date"> {{ recipe.date_posted|date:"m.d.y" }} </p>
+          <img class="recipe-image" src="{{ image.image.url }}"/>
+          <div class="recipe-description">
+            <p class="recipe-name"><a href="{% url 'recipe-detail' recipe.pk %}">{{ recipe.name }}</a></p>
+            <p class="recipe-info">Cook Time: {{ recipe.cook_time }} minutes</p>
+            <p class="recipe-info">Difficulty: {{ recipe.difficulty }} / 5 </p>
+            <p class="recipe-info">Rating: 
+              <i class="fas fa-star {{ recipe.pk }}"></i>
+              <i class="fas fa-star {{ recipe.pk }}"></i>
+              <i class="fas fa-star {{ recipe.pk }}"></i>
+              <i class="fas fa-star {{ recipe.pk }}"></i>
+              <i class="fas fa-star {{ recipe.pk }}"></i>
+            </p>
+            <img class="user-picture" src="{{ recipe.author.profile.image.url }}" />
+          </div>
+
+          <script type="text/javascript">
+            var stars = document.getElementsByClassName("{{ recipe.pk }}");
+            var rating = "{{ recipe.rating }}"
+
+            for (var x = 0; x < stars.length; ++x) {
+              stars[x].classList.add('selected');
+              if (x == rating - 1) {
+                break;
+              }
+            }
+          </script>
+
+        </div>
+      {% endfor %}
+    </div>
+
+    <script type="text/javascript">
+      function displayFilters() {
+        if (document.getElementById('filters').classList.contains('hidden')) {
+          document.getElementById('filters').classList.remove('hidden');
+        }
+        else {
+          document.getElementById('filters').classList.add('hidden');
+        }
+      }
+    </script>
+
+    <script type="text/javascript">
+      function setFilter(element) {
+        document.getElementById('filter-by-type').value = element.innerHTML;
+        document.getElementById('selected-filter').innerHTML = element.innerHTML;
+      }
+    </script>
+
+    <script type="text/javascript">
+      function cook(s) {
+        if (s == "Highest Rated") return "-rating";
+        if (s == "Shortest Cook Time") return "cook_time";
+        if (s == "Alphabetical Order") return "name";
+        if (s == "Least Difficult") return "difficulty";
+        if (s == "Date Created") return "-date_posted";
+      }
+
+      function filter(element) {
+        var filter_by_raw = document.getElementById("filter-by-type").value;
+        var filter_by = cook(filter_by_raw);
+        document.getElementById("filter-by-type-clean").value = filter_by;
+
+        if (filter_by) {
+          $.ajax({
+            url: "filter/",
+            data: {
+              filter: filter_by,
+              filter_raw: filter_by_raw,
+            },
+          });
+        }
+
+      }
+    </script>
+
+  </body>
+{% endblock %}

@@ -1,0 +1,156 @@
+body {
+  background-color: #F5F4EA;
+}
+
+/* navbar */
+nav {
+  background-color: #F5E29F;
+  height: 70px;
+  margin-left: -15px;
+  padding-right: 15px;
+}
+
+img.profile-icon, img.settings-icon, img.logout-icon {
+  margin-top: 13px;
+  float: right;
+  width: 45px;
+  margin-right: 15px;
+}
+
+img.logout-icon {
+  margin-right: 0;
+  margin-left: 15px;
+}
+
+i.addrecipe-icon {
+  color: #E5E5E5;
+  margin: 9px 0px 0px 10px;
+}
+
+div.addrecipe-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50px;
+  float: right;
+  background-color: #2D4073;
+  font-size: 30px;
+  margin: 13px 0 0 0;
+}
+
+/* recipe */
+div.recipe-wrap {
+  width: 50%;
+  margin-left: 70px;
+  display: inline-block;
+}
+
+div.header-wrap {
+  display: inline-block;
+  position: relative;
+}
+
+div.images-wrap {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 12vw;
+  padding-top: 50px;
+}
+
+p.recipe-title {
+  color: #2D4073;
+  font-size: 65px;
+  margin: 30px 0px 5px 0px;
+  font-family: "Abril Fatface";
+  line-height: 70px;
+}
+
+div.edit-button {
+  font-family: "Abril Fatface";
+  text-align: center;
+  width: 80px;
+  background-color: #C4C4C4;
+  font-size: 20px;
+
+  position: absolute;
+  right: 0px;
+  bottom: -35px;
+}
+
+div.edit-button:hover {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+div.info-wrap {
+  margin-top: 30px;
+}
+
+p.title {
+  color: #9E5147;
+  font-family: "Abril Fatface";
+  font-size: 32px;
+  margin-bottom: 5px;
+  line-height: 43px;
+  display: inline-block;
+}
+
+p.desc {
+  color: black;
+  font-size: 32px;
+  font-family: "Roboto Slab";
+  display: inline-block;
+  margin: 0;
+  margin-left: 8px;
+  font-weight: 600;
+}
+
+i.fa-star {
+  color: #8791B3;
+}
+
+i.selected {
+  color: #F5E29F;
+}
+
+div.more-info-wrap {
+  margin-top: 40px;
+}
+
+p.long-title {
+  color: #9E5147;
+  font-family: "Abril Fatface";
+  font-size: 32px;
+  margin-bottom: 5px;
+  line-height: 43px;
+  border-bottom: 2px solid rgb(161, 161, 161);
+}
+
+p.list {
+  color: black;
+  font-size: 28px;
+  font-family: "Roboto Slab";
+  display: inline-block;
+  margin-bottom: 40px;
+  margin-top: 10px;
+  font-weight: 600;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  line-height: 38px;
+}
+
+img.recipe-image {
+  width: 320px;
+  height: 320px;
+  border-radius: 400px;
+  display: block;
+  border: 5px solid rgb(173, 173, 173);
+  margin-bottom: 50px;
+}

@@ -1,0 +1,77 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+{% block style %}
+  <link rel="stylesheet" type="text/css" href="{% static 'food/css/detail.css' %}">
+{% endblock %}
+
+{% block content %}
+  <body>
+
+    <nav>
+      <a href="{% url 'logout' %}"><img src="{% static 'food/images/logout.png' %}" class="logout-icon"/></a>
+      <div class="addrecipe-icon">
+        <a href="{% url 'addrecipe' %}"><i class="fas fa-plus addrecipe-icon"></i></a>
+      </div>
+      <a href="{% url 'profile' %}"><img src="{% static 'food/images/user.png' %}" class="profile-icon"/></a>
+      <a href="{% url 'home' %}"><img src="{% static 'food/images/home.png' %}" class="profile-icon"/></a>
+    </nav>
+
+    <!-- recipe goes here -->
+
+    <div class="recipe-wrap">
+
+      <!-- recipe title/edit -->
+      <div class="header-wrap">
+        <p class="recipe-title">{{ recipe.name }}</p>
+        <div class="edit-button">
+          <a href="{% url 'recipe-update' recipe.pk %}">Edit</a>
+        </div>
+      </div>
+
+      <!-- cooking time, etc. -->
+      <div class="info-wrap">
+        <p class="title">Cooking Time:</p><p class="desc">{{ recipe.cook_time }} minutes</p><br/>
+        <p class="title">Difficulty:</p><p class="desc">{{ recipe.difficulty }} / 5</p><br/>
+        <p class="title">Rating:              
+          <i class="fas fa-star {{ recipe.pk }}"></i>
+          <i class="fas fa-star {{ recipe.pk }}"></i>
+          <i class="fas fa-star {{ recipe.pk }}"></i>
+          <i class="fas fa-star {{ recipe.pk }}"></i>
+          <i class="fas fa-star {{ recipe.pk }}"></i>
+        </p>
+      </div>
+
+      <!-- recipe/ingredients -->
+      <div class="more-info-wrap">
+        <p class="long-title">Ingredients</p>
+        <p class="list">{{ recipe.ingredients }}</p>
+
+        <p class="long-title">Recipe</p>
+        <p class="list">{{ recipe.recipe }}</p>
+
+        <p class="long-title">Link</p>
+        <p class="list">{{ recipe.link }}</p>
+      </div>
+    </div>
+
+    <div class="images-wrap">
+      {% for image in images %}
+        <img src="{{ image.image.url }}" class="recipe-image"/>
+      {% endfor %}
+    </div>
+    
+    <script type="text/javascript">
+      var stars = document.getElementsByClassName("fa-star");
+      var rating = "{{ recipe.rating }}"
+
+      for (var x = 0; x < stars.length; ++x) {
+        stars[x].classList.add('selected');
+        if (x == rating - 1) {
+          break;
+        }
+      }
+    </script>
+
+  </body>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+{% block style %}
+  <link rel="stylesheet" type="text/css" href="{% static 'users/css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+  <body>
+
+    <p class="register-title">Register! Join the food fam</p>
+
+    <div class="register-container">
+      
+      <form method="POST">
+      {% csrf_token %}
+        <legend> Register for an Account! </legend>
+        {{ form }}
+
+        <div class="password-rules">
+          <b> required </b> <br/>
+          your username can only contain letters, digits, and @ . + - _ only. <br/>
+          your password can't contain your username or be a commonly used. <br/>
+          your password must be at least 8 characters and contain at least one letter.
+        </div>
+
+        <button type="submit" class="register-button">register</button>
+        <button class="login-button"><a href="{% url 'login' %}">login</a></button>
+      </form>
+
+    </div>
+
+    <div class="logo-container">
+      <img src="{% static 'users/images/register-logo.png' %}" class="register-logo"/>
+    </div>
+
+    <!-- modify elements -->
+    <script type="text/javascript">
+      var labels = document.getElementsByTagName("LABEL");
+      labels[0].innerHTML = "username";
+      labels[1].innerHTML = "password";
+      labels[2].innerHTML = "confirm";
+      labels[2].classList.add('nobottom');
+
+      var inputs = document.getElementsByTagName("INPUT");
+      inputs[1].placeholder = "my name";
+      inputs[2].placeholder = "my password";
+      inputs[2].classList.add('second');
+      inputs[3].placeholder = "confirm password";
+      inputs[3].classList.add('third');
+
+    </script>
+  </body>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+{% block style %} 
+  <link rel="stylesheet" type="text/css" href="{% static 'users/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+  <body>
+
+    <!-- nav bar -->
+    <nav>
+      <a href="{% url 'logout' %}"><img src="{% static 'food/images/logout.png' %}" class="logout-icon"/></a>
+      <div class="addrecipe-icon">
+        <a href="{% url 'addrecipe' %}"><i class="fas fa-plus addrecipe-icon"></i></a>
+      </div>
+      <a href="{% url 'profile' %}"><img src="{% static 'food/images/user.png' %}" class="profile-icon"/></a>
+      <a href="{% url 'home' %}"><img src="{% static 'food/images/home.png' %}" class="profile-icon"/></a>
+    </nav>
+
+    <div class="profile-container">
+      <p class="profile-title">Me Myself & I</p>
+  
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+  
+        {{ user_form }}
+
+        {{ profile_form.as_p }}
+        <button class="submit-button" type="submit"> save changes </button>
+      </form>
+
+      <div class="image-section">
+        <img src="{{ user.profile.image.url }}" class="profile-image" id="profile-image"/>
+        <figcaption>avatar</figcaption>
+        <i class="fas fa-pencil-alt" onClick="simulateUpload()"></i>
+      </div>
+
+
+    </div>
+
+    <div class="previous-posts">
+      <p class="profile-title">Previous Eats</p>
+
+      <div class="all-recipes">
+        {% if image_recipes %}
+          {% for recipe, image in image_recipes %}
+            <div class="recipe">
+              <p class="recipe-date">{{ recipe.date_posted|date:"m.d.y" }}</p>
+              <img class="recipe-image" src="{{ image.image.url }}"/>
+              <div class="recipe-description">
+                <p class="recipe-name"><a href="{% url 'recipe-detail' recipe.pk %}">{{ recipe.name }}</a></p>
+                <p class="recipe-info">Difficulty: {{ recipe.difficulty }} / 5 </p>
+                <p class="recipe-info">Rating: 
+                  <i class="fas fa-star {{ recipe.pk }}"></i>
+                  <i class="fas fa-star {{ recipe.pk }}"></i>
+                  <i class="fas fa-star {{ recipe.pk }}"></i>
+                  <i class="fas fa-star {{ recipe.pk }}"></i>
+                  <i class="fas fa-star {{ recipe.pk }}"></i>
+                </p>
+              </div>
+          </div>
+
+          <!-- highlighting the stars -->
+          <script type="text/javascript">
+            var stars = document.getElementsByClassName("{{ recipe.pk }}");
+            var rating = "{{ recipe.rating }}"
+
+            for (var x = 0; x < stars.length; ++x) {
+              stars[x].classList.add('selected');
+              if (x == rating - 1) {
+                break;
+              }
+            }
+          </script>
+
+          {% endfor %}
+
+        {% else %}
+          <p class="no-recipes">Your recipes will show up here!</p>
+        {% endif %}
+
+      </div>
+    
+    </div>
+
+    <!-- modifying elements -->
+    <script type="text/javascript">
+      var labels = document.getElementsByTagName("LABEL");
+      var inputs = document.getElementsByTagName("INPUT");
+      var paragraphs = document.getElementsByTagName("P");
+
+      labels[0].innerHTML = "change username";
+      inputs[2].setAttribute("onchange", "changePhoto(this);");
+      paragraphs[1].classList.add('hide');
+
+    </script>
+
+    <script type="text/javascript">
+      function simulateUpload() {
+        document.getElementById('id_image').click();
+      }
+    </script>
+
+    <script type="text/javascript">
+      function changePhoto(element) {
+        var preview = document.getElementById('profile-image');
+        var file = document.getElementById('id_image').files[0];
+        var reader = new FileReader();
+
+        // gets the url to display
+        reader.onloadend = function () {
+          preview.src = reader.result;
+        }
+
+        if (file) {
+          reader.readAsDataURL(file);
+        } else {
+          preview.src = "";
+        }
+
+      }
+    </script>
+  </body>
+{% endblock %}

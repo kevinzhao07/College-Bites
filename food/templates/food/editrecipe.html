@@ -1,0 +1,316 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'food/css/editrecipe.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<body>
+  
+  <!-- hidden images -->
+  {% for image in images %}
+    <input type="text" class="hidden-images-url hide" value="{{ image.image.url }}"/>
+  {% endfor %}
+
+  <nav>
+    <a href="{% url 'logout' %}"><img src="{% static 'food/images/logout.png' %}" class="logout-icon"/></a>
+    <div class="addrecipe-icon">
+      <a href="{% url 'addrecipe' %}"><i class="fas fa-plus addrecipe-icon"></i></a>
+    </div>
+    <a href="{% url 'profile' %}"><img src="{% static 'food/images/user.png' %}" class="profile-icon"/></a>
+    <a href="{% url 'home' %}"><img src="{% static 'food/images/home.png' %}" class="profile-icon"/></a>
+  </nav>
+
+  <div class="page_name"> Let's get cooking </div>
+  <img src="{% static 'food/images/frying-pan.png' %}" class="addrecipe-icon" />
+
+  <form method="POST" id="add-recipe-form">
+    {% csrf_token %}
+    <label for="name_input">recipe name</label>
+    <input id="name_input" required value="{{ recipe.name }}" />
+
+    <label for="time_input">cooking time (mins)</label>
+    <input id="time_input" type="number" required value="{{ recipe.cook_time }}" />
+
+    <label for="ingredients_input">ingredients</label>
+    <textarea id="ingredients_input" rows="4" required>{{ recipe.ingredients }}</textarea>
+
+    <label for="steps_input">steps</label>
+    <textarea id="steps_input" rows="8" required>{{ recipe.recipe }}</textarea>
+
+    <label for="links_input">links</label>
+    <input id="links_input" required value="{{ recipe.link }}" />
+
+    <!-- hidden inputs -->
+    <input class="hidden_input" id="rating_input" required value="{{ recipe.rating }}" />
+    <input class="hidden_input" id="difficulty_input" required value="{{ recipe.difficulty }}" />
+
+    <p class="difficulty"> difficulty </p>
+
+    <div class="scale">
+      <div id="one" class="difficulty-circle" onClick="highlight(this, 'difficulty-circle')"></div>
+      <div id="two" class="difficulty-circle" onClick="highlight(this, 'difficulty-circle')"></div>
+      <div id="three" class="difficulty-circle" onClick="highlight(this, 'difficulty-circle')"></div>
+      <div id="four" class="difficulty-circle" onClick="highlight(this, 'difficulty-circle')"></div>
+      <div id="five" class="difficulty-circle" onClick="highlight(this, 'difficulty-circle')"></div>
+    </div>
+
+    <br />
+    <p class="rating"> rating </p>
+
+    <div class="scale">
+      <i id="one" class="fas fa-star" onClick="highlight(this, 'fa-star');"></i>
+      <i id="two" class="fas fa-star" onClick="highlight(this, 'fa-star');"></i>
+      <i id="three" class="fas fa-star" onClick="highlight(this, 'fa-star');"></i>
+      <i id="four" class="fas fa-star" onClick="highlight(this, 'fa-star');"></i>
+      <i id="five" class="fas fa-star" onClick="highlight(this, 'fa-star');"></i>
+    </div>
+  </form>
+
+  <form method="POST" enctype="multipart/form-data">
+
+    <!-- necessary management_form and csrf_toke  -->
+    {{ formset.management_form }}
+    {% csrf_token %}
+
+    <!-- display formset -->
+    {% for form in formset %}
+    {{ form }}
+    {% endfor %}
+
+    <!-- we use this to select images -->
+    <!-- all images/overlay -->
+    <div class="all-images">
+      <div class="image-container hide">
+        <img id="recipe-image-0" src="#" alt="this recipe's images!" class="image-recipe-item" onmouseover="addCancel(0);"/>
+        <div class="delete-image hide" onmouseout="removeCancel(0);">
+          <i class="fas fa-times" onclick="removeImage(0);"></i>
+        </div>
+      </div>
+
+      <div class="image-container hide">
+        <img id="recipe-image-1" src="#" alt="this recipe's images!" class="image-recipe-item" onmouseover="addCancel(1);"/>
+        <div class="delete-image hide" onmouseout="removeCancel(1);">
+          <i class="fas fa-times" onclick="removeImage(1);"></i>
+        </div>
+      </div>
+
+      <div class="image-container hide">
+        <img id="recipe-image-2" src="#" alt="this recipe's images!" class="image-recipe-item" onmouseover="addCancel(2);"/>
+        <div class="delete-image hide" onmouseout="removeCancel(2);">
+          <i class="fas fa-times" onclick="removeImage(2);"></i>
+        </div>
+      </div>
+       
+      <div id="add-images-selector" class="add-images_plus" onclick="simulateUpload();"><i class="fas fa-plus image-add-button"></i></div>
+    </div>
+    
+    <!-- hidden submit button (will be pressed when submit) -->
+    <button type="submit" id="submit-images">submit</button>
+  </form>
+
+  <button class="submit-recipe" onclick="updateRecipe(this);">update</button>
+  <div id="confirmation" class="added-recipe-confirmation hidden">
+    <i class="fas fa-check"></i>
+    <p class="added-confirmation">updated!</p>
+  </div>
+
+  <!-- modifying elements -->
+  <script type="text/javascript">
+    let labels = document.getElementsByTagName('LABEL');
+    let input = document.getElementsByTagName('INPUT');
+    let imageContainer = document.getElementsByClassName('image-container');
+    let deleteOverlay = document.getElementsByClassName('delete-image');
+    let images = document.getElementsByClassName('image-recipe-item');
+    let hidden_images = document.getElementsByClassName('hidden-images-url');
+    let count = ['id_form-0-image', 'id_form-1-image', 'id_form-2-image'];
+    let deletedImages = [];
+
+    // changing/hiding unnecessary labels
+    labels[labels.length - 3].innerHTML = "add images (up to 3)";
+    labels[labels.length - 2].classList.add("hide");
+    labels[labels.length - 1].classList.add("hide");
+
+    // changing/hiding unnecessary inputs
+    input[input.length - 3].classList.add("hide");
+    input[input.length - 2].classList.add("hide");
+    input[input.length - 1].classList.add("hide");
+
+    // hiding unnecessary buttons
+    document.getElementById('submit-images').classList.add('hide');
+
+    // display NEXT form ONLY if the first one has been modified
+    input[input.length - 3].setAttribute("onchange", "updateForms(this, 0);");
+    input[input.length - 2].setAttribute("onchange", "updateForms(this, 1);");
+    input[input.length - 1].setAttribute("onchange", "updateForms(this, 2);");
+
+    // display already given images/decrease count
+    for (var x = 0; x < hidden_images.length; ++x) {
+      images[x].src = hidden_images[x].value; 
+      imageContainer[x].classList.remove('hide');
+      count.shift()
+    }
+
+    // if we already have 3 images, remove. no more images.
+    if (count.length == 0) document.getElementById('add-images-selector').classList.add('hide');
+
+    // function for adding new forms/display image
+    function updateForms(element, nextInput) {
+
+      // display image
+      var preview = images[nextInput];
+      var file = document.getElementById("id_form-"+nextInput+"-image").files[0];
+      var reader = new FileReader();
+
+      // gets the url to display
+      reader.onloadend = function () {
+        preview.src = reader.result;
+      }
+
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = "";
+      }
+
+      // unhide that image/inc count, remove next element
+      imageContainer[nextInput].classList.remove('hide');
+      count.shift();
+
+      // if it has gone over, then remove it. no more images.
+      if (count.length == 0) document.getElementById('add-images-selector').classList.add('hide');
+    }
+
+    // prompts add image, for respective form
+    function simulateUpload() {
+      document.getElementById(count[0]).click();
+    }
+
+    // adds the cancel button on top of image (overlay)
+    function addCancel(inputNum) {
+      deleteOverlay[inputNum].classList.remove('hide');
+      images[inputNum].classList.add('opaque');
+    }
+
+    // remove the cancel button on top of image (overlay)
+    function removeCancel(inputNum) {
+      deleteOverlay[inputNum].classList.add('hide');
+      images[inputNum].classList.remove('opaque');
+    }
+
+    // resets the image for the form cancelled
+    function removeImage(inputNum) {
+      if (count.length == 0) document.getElementById('add-images-selector').classList.remove('hide');
+
+      // this form is ready to be used again
+      count.push('id_form-'+inputNum+'-image');
+
+      // reset form (remove file), remove image, and hide it
+      imageContainer[inputNum].classList.add('hide');
+      images[inputNum].classList.src = "";
+      $('#id_form-'+inputNum+'-image').val('');
+
+      // add to list of old/deleted photos
+      deletedImages.push(inputNum);
+    }
+
+  </script>
+
+  <!-- highlighting all ON LOAD -->
+  <script type="text/javascript">
+    var stars = document.getElementsByClassName("fa-star");
+    var circles = document.getElementsByClassName("difficulty-circle");
+    var rating = "{{ recipe.rating }}";
+    var difficulty = "{{ recipe.difficulty }}";
+
+    for (var x = 0; x < stars.length; ++x) {
+      stars[x].classList.add('highlighted');
+      if (x == rating - 1) {
+        break;
+      }
+    }
+
+    for (var x = 0; x < circles.length; ++x) {
+      circles[x].classList.add('highlighted');
+      if (x == difficulty - 1) {
+        break;
+      }
+    }
+  </script>
+
+  <!-- highlights the circles/stars on click -->
+  <script type="text/javascript">
+    function return_number(string) {
+      if (string == "one") return 1;
+      if (string == "two") return 2;
+      if (string == "three") return 3;
+      if (string == "four") return 4;
+      if (string == "five") return 5;
+    }
+
+    function highlight(element, className) {
+      var targetId = element.id;
+      var selected = document.getElementsByClassName(className);
+
+      if (className == "difficulty-circle") {
+        document.getElementById('difficulty_input').value = return_number(targetId);
+      }
+
+      if (className == "fa-star") {
+        document.getElementById("rating_input").value = return_number(targetId);
+      }
+
+      for (var x = 0; x < selected.length; ++x) {
+        selected[x].classList.remove('highlighted');
+      }
+      for (var x = 0; x < selected.length; ++x) {
+        selected[x].classList.add('highlighted');
+        if (selected[x].id == targetId) {
+          break;
+        }
+      }
+    }
+  </script>
+
+  <!-- when update is clicked, update the recipe -->
+  <script type="text/javascript">
+    function updateRecipe(element) {
+      var nameVar = document.getElementById("name_input").value;
+      var linkVar = document.getElementById("links_input").value;
+      var ingredientsVar = document.getElementById("ingredients_input").value;
+      var recipeVar = document.getElementById("steps_input").value;
+      var ratingVar = document.getElementById("rating_input").value;
+      var difficultyVar = document.getElementById("difficulty_input").value;
+      var timeVar = document.getElementById("time_input").value;
+      var pkVar = "{{ recipe.pk }}";
+
+      if (nameVar && linkVar && ingredientsVar && recipeVar && ratingVar && difficultyVar && timeVar) {
+        $.ajax({
+          url: "{% url 'updaterecipe' recipe.pk %}",
+          data: {
+            name: nameVar,
+            link: linkVar,
+            ingredients: ingredientsVar,
+            recipe: recipeVar,
+            rating: ratingVar,
+            difficulty: difficultyVar,
+            time: timeVar,
+            pk: pkVar,
+            deleted: JSON.stringify(deletedImages),
+          },
+        });
+
+        document.getElementById('confirmation').classList.remove('hidden');
+
+        setTimeout(function () {
+          document.getElementById('submit-images').click();
+        }, (1000));
+
+      }
+    }
+  </script>
+
+</body>
+{% endblock %}

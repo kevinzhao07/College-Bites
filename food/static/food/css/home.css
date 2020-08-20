@@ -1,0 +1,218 @@
+/* overall */
+p {
+  margin: 0;
+}
+
+body {
+  background-color: #F5F2D8;
+  padding-left: 15px;
+}
+
+p.home-title {
+  color: #9E5147;
+  font-size: 70px;
+  margin: 0px 0px 10px 45px;
+  font-family: "Abril Fatface";
+  display: inline-block;
+}
+
+img.home-icon {
+  width: 65px;
+  display: inline-block;
+  vertical-align: -7px;
+  margin-left: 30px;
+}
+
+/* navbar */
+nav {
+  background-color: #F5E29F;
+  height: 70px;
+  margin-left: -15px;
+  padding-right: 15px;
+}
+
+img.profile-icon, img.settings-icon, img.logout-icon {
+  margin-top: 13px;
+  float: right;
+  width: 45px;
+  margin-right: 15px;
+}
+
+img.logout-icon {
+  margin-right: 0;
+  margin-left: 15px;
+}
+
+i.addrecipe-icon {
+  color: #E5E5E5;
+  margin: 9px 0px 0px 10px;
+}
+
+div.addrecipe-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50px;
+  float: right;
+  background-color: #2D4073;
+  margin: 13px 0 0 0;
+}
+
+/* filtering */
+p.filter-recipes {
+  color: black;
+  font-family: "Abril Fatface";
+  margin-left: 45px;
+  font-size: 35px;
+  display: inline-block;
+}
+
+.hidden {
+  display: none;
+}
+
+div.dropdown-filter {
+  background-color: #C4C4C4;
+  width: 250px;
+  height: 35px;
+  display: inline-block;
+  vertical-align: 8px;
+  text-align: center;
+  margin-left: 15px;
+  position: relative;
+}
+
+p.selected-filter {
+  font-family: "Roboto Slab";
+  display: inline-block;
+  vertical-align: 2px;
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+div.other-filters {
+  position: absolute;
+  margin-top: 2px;
+  border-top: 1px solid rgb(107, 107, 107);
+}
+
+ul {
+  list-style-type: none;
+  width: 250px;
+}
+
+ul:hover, li:hover, div.dropdown-filter {
+  cursor: pointer;
+}
+
+li:hover {
+  background-color: #b9b9b9;
+}
+
+li {
+  font-family: "Roboto Slab";
+  font-size: 22px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background-color: #C4C4C4;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+i {
+  font-size: 30px;
+  margin-left: 5px;
+}
+
+i:hover {
+  cursor: pointer;
+}
+
+form {
+  display: inline-block;
+  vertical-align: 6px;
+}
+
+button.filter-button {
+  border: 0;
+  background-color: transparent;
+  display: inline-block;
+}
+
+/* all recipes list */
+div.all-recipes {
+  border-left: 1px solid black;
+  margin-left: 85px;
+  margin-top: 30px;
+}
+
+div.recipe {
+  margin-bottom: 25px;
+}
+
+p.recipe-date {
+  font-family: "Abril Fatface";
+  font-size: 32px;
+  margin-left: 15px;
+}
+
+.recipe-image {
+  width: 210px;
+  height: 210px;
+  border-radius: 150px;
+  margin-left: 25px;
+  margin-top: 15px;
+  background-color: rgb(194, 194, 194);
+  display: inline-block;
+}
+
+/* todo */
+.user-picture {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  margin-left: 12px;
+  margin-top: 25px;
+  background-color: rgb(194, 194, 194);
+  display: inline-block;
+}
+
+div.recipe-description {
+  vertical-align: top;
+  display: inline-block;
+  margin-left: 100px;
+}
+
+p.recipe-name {
+  background-color: #FADF80;
+  font-size: 44px;
+  font-family: "Abril Fatface";
+  padding: 0px 10px;
+  line-height: 55px;
+  display: inline-block;
+}
+
+p.recipe-info {
+  font-family: "Roboto Slab";
+  font-size: 28px;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-left: 12px;
+  line-height: 30px;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+}
+
+i.fa-star {
+  color: #C4C4C4;
+}
+
+i.selected {
+  color: #FADF80;
+}

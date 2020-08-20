@@ -1,0 +1,31 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+{% block style %} 
+  <link rel="stylesheet" type="text/css" href="{% static 'users/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+  <body>
+    
+    <form method="POST" class="login-form">
+      <div class="icons">
+        <img class="small-icon" src="{% static 'users/images/poultry.png' %}"/>
+        <img class="small-icon" src="{% static 'users/images/fried-egg.png' %}"/>
+        <img class="small-icon" src="{% static 'users/images/omelette.png' %}"/>
+      </div>
+      {% csrf_token %}
+      <legend> Dear Food Diary... </legend>
+      {{ form }}
+      <button><a href="{% url 'register' %}">register</a></button>
+      <button type="submit">enter</button>
+    </form>
+
+    <!-- modifying content -->
+    <script type="text/javascript">
+      document.getElementById("id_username").placeholder = 'username';
+      document.getElementById("id_password").placeholder = 'password';
+      document.getElementsByTagName("LI")[0].innerHTML = "Username and password not found. Try again or register for an account!"
+    </script>
+  </body>
+{% endblock %}
